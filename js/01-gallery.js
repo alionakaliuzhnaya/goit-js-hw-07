@@ -2,18 +2,19 @@ import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
 console.log(galleryItems);
+
 const galleryContainer = document.querySelector(".gallery");
 
 const createGalleryItem = createGalleryMakeup(galleryItems);
 
-galleryContainer.insertAdjacentHTML("beforeend", createGalleryItem);
+galleryContainer.addEventListener("click", onOpenModalClick);
 
 function createGalleryMakeup(gallery) {
   return galleryItems
     .map(
       ({ preview, original, description }) =>
         `<div class="gallery__item">
-      <a class="gallery__link" href="large-image.jpg">
+      <a class="gallery__link" href=${original}">
         <img
           class="gallery__image"
           src="${preview}"
@@ -25,6 +26,8 @@ function createGalleryMakeup(gallery) {
     )
     .join("");
 }
+
+galleryContainer.insertAdjacentHTML("beforeend", createGalleryItem);
 //const createGalleryItem = galleryItems
 //.map(
 //  ({ preview, original, description }) =>
@@ -43,8 +46,6 @@ function createGalleryMakeup(gallery) {
 
 //galleryContainer.insertAdjacentHTML("beforeend", createGalleryItem);
 
-galleryContainer.addEventListener("click", onOpenModalClick);
-
 function onOpenModalClick(event) {
   event.preventDefault();
   console.log(event.target);
@@ -60,12 +61,14 @@ function onOpenModalClick(event) {
 `);
 
   instance.show();
-}
+  window.addEventListener("keydown", onCloseModalClick);
+  instance.element().addEventListener("click", onCloseModalClick);
 
-//addEventListener("click", onCloseModalClick);
-//
-//function onCloseModalClick(event) {
-//  if (event.target.nodeName === "IMG") {
-//    instance.close();
-//  }
-//}
+  function onCloseModalClick(event) {
+    if (event.code === "Escape" || event.target.nodeName === "IMG") {
+      instance.close();
+
+      window.removeEventListener("keydown", onCloseModalClick);
+    }
+  }
+}
