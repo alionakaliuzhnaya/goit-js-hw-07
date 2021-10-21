@@ -10,7 +10,7 @@ const createGalleryItem = createGalleryMakeup(galleryItems);
 galleryContainer.addEventListener("click", onOpenModalClick);
 
 function createGalleryMakeup(gallery) {
-  return galleryItems
+  return gallery
     .map(
       ({ preview, original, description }) =>
         `<div class="gallery__item">
